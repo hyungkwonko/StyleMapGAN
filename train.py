@@ -516,6 +516,7 @@ if __name__ == "__main__":
         type=str,
         default="celeba_hq",
         choices=[
+            "sketch",  # added
             "celeba_hq",
             "afhq",
             "ffhq",
@@ -528,7 +529,7 @@ if __name__ == "__main__":
     parser.add_argument("--save_network_interval", type=int, default=10000)
     parser.add_argument("--small_generator", action="store_true")
     parser.add_argument("--batch", type=int, default=16, help="total batch sizes")
-    parser.add_argument("--size", type=int, choices=[128, 256, 512, 1024], default=256)
+    parser.add_argument("--size", type=int, choices=[128, 256, 512, 1024], default=128)
     parser.add_argument("--r1", type=float, default=10)
     parser.add_argument("--d_reg_every", type=int, default=16)
     parser.add_argument("--lr", type=float, default=0.002)

@@ -183,7 +183,7 @@ if __name__ == "__main__":
         (args.generated_image_path is not None) and (args.ckpt is None)
     )
 
-    if args.dataset == "celeba_hq":
+    if args.dataset == "celeba_hq" or "sketch":
         n_sample = 29000
     elif args.dataset == "afhq":
         n_sample = 15130

@@ -25,7 +25,13 @@ if [ $CMD == "prepare-fid-calculation" ]; then
     wget -N $URL -O $ZIP_FILE
     unzip $ZIP_FILE -d "./metrics/fid_stats"
     rm $ZIP_FILE
-    
+elif  [ $CMD == "sketch128" ]; then
+    DATASET_FOLDER="./data/sketch128"
+    # raw images to LMDB format
+    TARGET_SIZE=128
+    for DATASET_TYPE in "train" "test" "val"; do
+        python preprocessor/prepare_data.py --out $DATASET_FOLDER/LMDB_$DATASET_TYPE --size $TARGET_SIZE $DATASET_FOLDER/raw_images/$DATASET_TYPE
+    done    
 elif [ $CMD == "create-lmdb-dataset" ]; then 
     if [ $DATASET == "celeba_hq" ]; then
         URL="https://mysnu-my.sharepoint.com/:u:/g/personal/gustnxodjs_seoul_ac_kr/EQANtAapq_5Pu9nElWECb_IBGdGhvODhRJRnKSEPlzHaZw?e=Pr3Csz&download=1"
