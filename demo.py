@@ -121,6 +121,10 @@ def my_morphed_images(
     )
     reference_images = (reference_images - 0.5) * 2
 
+    if (original_image.shape[1] == 1 and reference_images.shape[1] == 1):  # for grey-scale image
+        original_image = original_image.repeat(1, 3, 1, 1)
+        reference_images = reference_images.repeat(1, 3, 1, 1)
+
     masks = masks[: len(references)]
     masks = torch.from_numpy(np.stack(masks))
 
@@ -198,7 +202,7 @@ if __name__ == "__main__":
         "--dataset",
         type=str,
         default="celeba_hq",
-        choices=["celeba_hq", "afhq", "lsun/church_outdoor", "lsun/car"],
+        choices=["celeba_hq", "afhq", "lsun/church_outdoor", "lsun/car", "sketch"],
     )
     parser.add_argument("--interpolation_step", type=int, default=16)
     parser.add_argument("--ckpt", type=str, required=True)
