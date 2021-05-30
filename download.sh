@@ -25,33 +25,41 @@ if [ $CMD == "prepare-fid-calculation" ]; then
     wget -N $URL -O $ZIP_FILE
     unzip $ZIP_FILE -d "./metrics/fid_stats"
     rm $ZIP_FILE
-elif  [ $CMD == "sketch128" ]; then
-    DATASET_FOLDER="./data/sketch128"
-    # raw images to LMDB format
-    TARGET_SIZE=128
-    for DATASET_TYPE in "train" "test" "val"; do
-        python preprocessor/prepare_data.py --out $DATASET_FOLDER/LMDB_$DATASET_TYPE --size $TARGET_SIZE $DATASET_FOLDER/raw_images/$DATASET_TYPE
-    done    
 elif [ $CMD == "create-lmdb-dataset" ]; then 
     if [ $DATASET == "celeba_hq" ]; then
         URL="https://mysnu-my.sharepoint.com/:u:/g/personal/gustnxodjs_seoul_ac_kr/EQANtAapq_5Pu9nElWECb_IBGdGhvODhRJRnKSEPlzHaZw?e=Pr3Csz&download=1"
         DATASET_FOLDER="./data/celeba_hq"
         ZIP_FILE=$DATASET_FOLDER/celeba_hq_raw.zip
+        mkdir -p $DATASET_FOLDER
+        wget -N $URL -O $ZIP_FILE
+        unzip $ZIP_FILE -d $DATASET_FOLDER
+        rm $ZIP_FILE
+        TARGET_SIZE=256,1024
     elif  [ $DATASET == "afhq" ]; then
         URL="https://mysnu-my.sharepoint.com/:u:/g/personal/gustnxodjs_seoul_ac_kr/EbPgjpgkxDdBsAqS5rhSqr4BvbWM-MuWKuTSPl1EYPzCcw?e=eCm3tT&download=1"
         DATASET_FOLDER="./data/afhq"
         ZIP_FILE=$DATASET_FOLDER/afhq_raw.zip
+        mkdir -p $DATASET_FOLDER
+        wget -N $URL -O $ZIP_FILE
+        unzip $ZIP_FILE -d $DATASET_FOLDER
+        rm $ZIP_FILE
+        TARGET_SIZE=256,1024
+    elif  [ $DATASET == "sketch128" ]; then
+        DATASET_FOLDER="./data/sketch128"
+        TARGET_SIZE=128
+    elif  [ $DATASET == "sketch256" ]; then
+        DATASET_FOLDER="./data/sketch256"
+        TARGET_SIZE=256
+    elif  [ $DATASET == "sketch" ]; then
+        DATASET_FOLDER="./data/sketch"
+        TARGET_SIZE=256
+        # TARGET_SIZE=128,512
     else
         echo "Unknown DATASET"
         exit 1
     fi
-    mkdir -p $DATASET_FOLDER
-    wget -N $URL -O $ZIP_FILE
-    unzip $ZIP_FILE -d $DATASET_FOLDER
-    rm $ZIP_FILE
 
     # raw images to LMDB format
-    TARGET_SIZE=256,1024
     for DATASET_TYPE in "train" "test" "val"; do
         python preprocessor/prepare_data.py --out $DATASET_FOLDER/LMDB_$DATASET_TYPE --size $TARGET_SIZE $DATASET_FOLDER/raw_images/$DATASET_TYPE
     done
